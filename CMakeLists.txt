@@ -22,6 +22,9 @@ option(USE_GUMBO "Enable Gumbo HTML parser" ON)
 file(GLOB_RECURSE PS_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/include/parallel-scraper/*.hpp")
 set(PS_SOURCES
   src/main.cpp
+  src/net/HttpClient.cpp
+  src/utils/Config.cpp
+  src/utils/FileIO.cpp
 )
 
 add_executable(scraper ${PS_SOURCES} ${PS_HEADERS})
