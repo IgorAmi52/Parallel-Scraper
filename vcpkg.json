@@ -1,0 +1,8 @@
+{
+  "name": "parallel-scraper",
+  "version": "0.1.0",
+  "dependencies": [
+    "tbb"
+  ],
+  "builtin-baseline": "d6c3a6b2a9b6a2a33b8e2d6b3a8b9c2d8e7f5c1a"
+}
