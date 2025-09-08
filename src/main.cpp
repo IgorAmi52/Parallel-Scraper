@@ -7,41 +7,51 @@
 #include <parallel-scraper/FileIO.hpp>
 #include <parallel-scraper/Parser.hpp>
 #include <parallel-scraper/ResultStore.hpp>
+#include <parallel-scraper/Orchestrator.hpp>
+#include <tbb/global_control.h>
 
-void setup_env();
+void setup_env(int tnum);
 void cleanup_env();
 
 int main(int argc, char** argv) {
-    setup_env();
-
     ps::Config config = ps::load_config(argc, argv);
     std::vector<std::string> urls = ps::read_lines(config.urls_path);
+
+    setup_env(config.parallelism);
+
     ps::HttpClient client;
-    ps::HttpResult response = client.get(urls[0], config.timeout_ms, config.retries);
     ps::Parser parser;
     ps::ResultStore store(config.out_dir);
-    ps::Item item = parser.parse(response.body, response.url);
-    store.add_item_for_page(store.upsert_page(response), item);
-    std::cout << "Fetched " << store.page_count() << " pages, extracted " << store.item_count() << " items." << std::endl;
+    ps::Stats stats;
+    ps::Orchestrator orch(config, client, parser, store, stats);
+
+    auto start = std::chrono::steady_clock::now();
+    orch.run(urls);
+
+    auto end = std::chrono::steady_clock::now();
+    double elapsed = std::chrono::duration<double>(end - start).count();
+    elapsed = std::round(elapsed * 100.0) / 100.0;
+
+    store.snapshot_to_files(elapsed, orch.pages_ok(), orch.pages_err());
+    stats.snapshot(config.out_dir);
+
     cleanup_env();
     return 0;
 }
 
 
-void setup_env(){
+void setup_env(int tnum){
     curl_global_init(CURL_GLOBAL_DEFAULT);
+    if (tnum <= 0) tnum = std::thread::hardware_concurrency();
+    tbb::global_control gc(tbb::global_control::max_allowed_parallelism, tnum);
+
 }
 void cleanup_env(){
     curl_global_cleanup();
 }
 /*
-# 1. napravi clean build folder
 rm -rf build
 mkdir build
-
-# 2. pripremi (configure + generate)
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
-
-# 3. build (kompajliraj i linkuj)
 cmake --build build -j
 */

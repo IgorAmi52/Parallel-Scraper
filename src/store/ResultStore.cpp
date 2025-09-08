@@ -9,8 +9,8 @@ namespace fs = std::filesystem;
 namespace ps {
 
 ResultStore::ResultStore(std::string out_dir) {
-    out_dir = out_dir.empty() ? "out" : out_dir;
-    fs::create_directories(out_dir + "/pages");
+    out_dir_ = out_dir.empty() ? "out" : out_dir;
+    fs::create_directories(out_dir_ + "/pages");
 }
 
 uint64_t ResultStore::upsert_page(ps::HttpResult &res) {

@@ -3,7 +3,7 @@
 
 namespace ps {
 struct Config {
-  int parallelism = 8;
+  int parallelism = 32;
   int timeout_ms = 3000;
   int retries = 2;
   bool use_pipeline = false;
