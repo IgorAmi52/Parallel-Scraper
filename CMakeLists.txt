@@ -25,6 +25,8 @@ set(PS_SOURCES
   src/net/HttpClient.cpp
   src/utils/Config.cpp
   src/utils/FileIO.cpp
+  src/parse/Parser.cpp
+  src/store/ResultStore.cpp
 )
 
 add_executable(scraper ${PS_SOURCES} ${PS_HEADERS})
