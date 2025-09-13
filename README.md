@@ -19,7 +19,7 @@ The application is designed to efficiently extract data from the [Books to Scrap
 * [Analysis & Conclusion](#analysis--conclusion)
 * [License](#license)
 
-## 🚀 Features
+## Features
 
 * Parallel scraping with two modes:
 
@@ -40,7 +40,7 @@ The application is designed to efficiently extract data from the [Books to Scrap
 
 <!-- Project structure removed as requested -->
 
-## 🛠 Technical Overview
+## Technical Overview
 
 * **HttpClient** — wraps libcurl, returns `HttpResult` with status, body, and effective URL.
 * **Parser** — extracts title, price, and rating from HTML into `Item`.
@@ -58,7 +58,7 @@ Concurrency is controlled via:
 
 ---
 
-## 📦 Prerequisites
+## Prerequisites
 
 * CMake ≥ 3.16
 * C++20 compiler (clang++, g++, MSVC)
@@ -84,7 +84,7 @@ vcpkg install tbb curl nlohmann-json
 
 ---
 
-## ⚙️ Build
+## Build
 
 ```bash
 # 1. clean build dir
@@ -99,7 +99,7 @@ cmake --build build -j
 
 ---
 
-## ▶️ Run
+## Run
 
 1. Prepare `data/urls.txt` with product pages:
 
@@ -126,7 +126,7 @@ cmake --build build -j
 
 ---
 
-## 📤 Outputs
+## Outputs
 
 * `out/pages/page_X.html` → raw HTML pages
 * `out/results.json` → parsed items
@@ -137,7 +137,7 @@ cmake --build build -j
 ---
 
 
-## 📊 Benchmark
+## Benchmark
 
 | Threads | Mode          | Time (s) | Throughput (pages/s) |
 | ------- | ------------- | -------- | -------------------- |
@@ -152,7 +152,7 @@ cmake --build build -j
 
 ---
 
-## 📈 Analysis & Conclusion
+## Analysis & Conclusion
 
 **Analysis:**
 
@@ -171,6 +171,6 @@ For a small number of threads, `parallel_for` yields better results due to lower
 ---
 
 
-## 📜 License
+## License
 
 MIT — feel free to fork and adapt.
